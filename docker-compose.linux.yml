@@ -1,0 +1,13 @@
+version: "3.3"
+
+# We want the envoyproxy container to connect to our gRPC server running
+# on the host.  Docker for Mac provides a special hostname
+# `host.docker.internal` for this purpose, but on Linux there isn't a
+# similar option. We use the workaround described here:
+# https://github.com/docker/for-linux/issues/264#issuecomment-385698947
+services:
+  envoy:
+    command:
+    - /bin/sh
+    - -c
+    - ip -4 route list match 0/0 | awk '{print $$3" host.docker.internal"}' >> /etc/hosts && envoy -c /etc/envoy/envoy.yaml

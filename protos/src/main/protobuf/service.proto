@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package anyhike;
+
+message Location {
+    double lat = 1;
+    double lng = 2;
+    int64 timestamp = 3;
+}
+
+message AddLocationsRequest {
+    repeated Location locations = 1;
+}
+
+message AddLocationsResponse {
+    int32 size = 1;
+}
+
+message GetLocationsRequest {
+}
+
+message GetLocationsResponse {
+    repeated Location locations = 1;
+}
+
+service HikeStore {
+    rpc AddLocations(AddLocationsRequest) returns (AddLocationsResponse);
+
+    rpc GetLocations(GetLocationsRequest) returns (GetLocationsResponse);
+
+    rpc StreamLocations(GetLocationsRequest) returns (stream Location);
+}
